@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { API_BASE_URL } from '../utils/api';
 
 interface SaltComposition {
   salt_name: string;
@@ -42,7 +43,7 @@ export const SubstituteWidget: React.FC<SubstituteWidgetProps> = ({
     const fetchSubstitutes = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`http://localhost:5000/api/medicines/${currentMedicineId}/substitutes`);
+        const res = await fetch(`${API_BASE_URL}/api/medicines/${currentMedicineId}/substitutes`);
         const data = await res.json();
         setSubstitutes(data.substitutes || []);
       } catch (err) {

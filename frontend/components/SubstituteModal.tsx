@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Medicine, SubstituteMedicine } from '../types';
+import { API_BASE_URL } from '../utils/api';
 
 interface SubstituteModalProps {
   medicine: Medicine | null;
@@ -25,7 +26,7 @@ export const SubstituteModal: React.FC<SubstituteModalProps> = ({
     const fetchSubstitutes = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`http://localhost:5000/api/medicines/${medicine.id}/substitutes`);
+        const res = await fetch(`${API_BASE_URL}/api/medicines/${medicine.id}/substitutes`);
         const data = await res.json();
         setSubstitutes(data.substitutes || []);
       } catch (err) {

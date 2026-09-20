@@ -11,6 +11,7 @@ import { UploadRxModal } from '../components/UploadRxModal';
 import { CheckoutModal } from '../components/CheckoutModal';
 import { Footer } from '../components/Footer';
 import { Medicine, CartItem, SubstituteMedicine } from '../types';
+import { API_BASE_URL } from '../utils/api';
 
 export default function AmaraPharmacyHome() {
   const [medicines, setMedicines] = useState<Medicine[]>([]);
@@ -34,7 +35,7 @@ export default function AmaraPharmacyHome() {
       try {
         setLoading(true);
         const categoryParam = selectedCategory !== 'All' ? `?category=${encodeURIComponent(selectedCategory)}` : '';
-        const res = await fetch(`http://localhost:5000/api/medicines${categoryParam}`);
+        const res = await fetch(`${API_BASE_URL}/api/medicines${categoryParam}`);
         const data = await res.json();
         setMedicines(data.medicines || []);
       } catch (err) {

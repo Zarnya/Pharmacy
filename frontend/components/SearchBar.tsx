@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Medicine } from '../types';
+import { API_BASE_URL } from '../utils/api';
 
 interface SearchBarProps {
   onSelectMedicine?: (medicine: Medicine) => void;
@@ -27,7 +28,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSelectMedicine }) => {
       try {
         setIsLoading(true);
         const res = await fetch(
-          `http://localhost:5000/api/search?q=${encodeURIComponent(query.trim())}`,
+          `${API_BASE_URL}/api/search?q=${encodeURIComponent(query.trim())}`,
           { signal: controller.signal }
         );
         const data = await res.json();
