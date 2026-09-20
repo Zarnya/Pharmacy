@@ -3,6 +3,7 @@ import cors from 'cors';
 import { pool } from './db';
 import { MedicineSearchResult, SubstituteMedicine } from './types';
 import { searchMockMedicines, findMockSubstitutes, SEED_MEDICINES } from './mockFallback';
+import { SCHEMA_SQL } from './schemaSql';
 
 const app = express();
 app.use(cors());
@@ -14,9 +15,19 @@ async function checkPostgres(): Promise<boolean> {
   if (isPostgresAvailable !== null) return isPostgresAvailable;
   try {
     const client = await pool.connect();
-    client.release();
     isPostgresAvailable = true;
     console.log('✓ Connected to PostgreSQL database successfully.');
+    
+    // Auto-run schema and seed tables on connect (handles Render DB automatically)
+    try {
+      await client.query(SCHEMA_SQL);
+      console.log('✓ PostgreSQL tables & seeds verified successfully.');
+    } catch (initErr: any) {
+      console.warn('Schema check notice:', initErr.message);
+    } finally {
+      client.release();
+    }
+
     return true;
   } catch (err: any) {
     isPostgresAvailable = false;
